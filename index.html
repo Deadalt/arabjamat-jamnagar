@@ -1,6 +1,32 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
+  <script src="https://www.gstatic.com/firebasejs/10.5.2/firebase-app-compat.js"></script>
+
+<!-- Firebase Auth SDK -->
+<script src="https://www.gstatic.com/firebasejs/10.5.2/firebase-auth-compat.js"></script>
+
+<!-- Firebase Firestore SDK -->
+<script src="https://www.gstatic.com/firebasejs/10.5.2/firebase-firestore-compat.js"></script>
+
+<script>
+  // Your web app's Firebase configuration
+  const firebaseConfig = {
+    apiKey: "AIzaSyBj912pLGQg06hUXcJi5XSwAWJailUWcZs",
+    authDomain: "arabjamatjamnagar.firebaseapp.com",
+    projectId: "arabjamatjamnagar",
+    storageBucket: "arabjamatjamnagar.firebasestorage.app",
+    messagingSenderId: "257628939713",
+    appId: "1:257628939713:web:8eab9357803ee72c6cbb40",
+    measurementId: "G-4SC1KSRV8H"
+  };
+
+  // Initialize Firebase
+  firebase.initializeApp(firebaseConfig);
+  const auth = firebase.auth();
+  const db = firebase.firestore();
+</script>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Arab Jamat Jamnagar</title>
