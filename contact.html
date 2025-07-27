@@ -3,8 +3,9 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta name="description" content="Contact Arab Jamat Jamnagar leadership and committee members">
   <title>Contact - Arab Jamat Jamnagar</title>
-
+  
   <!-- Tailwind CSS -->
   <script src="https://cdn.tailwindcss.com"></script>
   <script>
@@ -13,38 +14,27 @@
         extend: {
           fontFamily: {
             sans: ['Segoe UI', 'Roboto', 'sans-serif']
+          },
+          colors: {
+            primary: '#1d4ed8',
+            secondary: '#1e40af'
           }
         }
       }
     }
   </script>
-
-  <!-- Firebase SDKs -->
+  
+  <!-- Firebase -->
   <script src="https://www.gstatic.com/firebasejs/10.5.2/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/10.5.2/firebase-auth-compat.js"></script>
-  <script>
-    const firebaseConfig = {
-      apiKey: "AIzaSyBj912pLGQg06hUXcJi5XSwAWJailUWcZs",
-      authDomain: "arabjamatjamnagar.firebaseapp.com",
-      projectId: "arabjamatjamnagar"
-    };
-
-    firebase.initializeApp(firebaseConfig);
-
-    firebase.auth().onAuthStateChanged((user) => {
-      if (!user) {
-        window.location.href = "login.html";
-      }
-    });
-  </script>
+  <script src="firebase-config.js"></script>
 </head>
 <body class="bg-white text-gray-800 font-sans">
-
   <!-- Navbar -->
-  <header class="bg-blue-700 text-white shadow-lg fixed top-0 w-full z-50">
+  <header class="bg-primary text-white shadow-lg fixed top-0 w-full z-50">
     <div class="max-w-7xl mx-auto px-4 py-4 flex justify-between items-center flex-row-reverse md:flex-row">
       <div class="md:hidden order-first">
-        <button id="menu-toggle" class="focus:outline-none">
+        <button id="menu-toggle" class="focus:outline-none" aria-label="Toggle menu">
           <svg class="w-7 h-7" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" d="M4 6h16M4 12h16M4 18h16" />
           </svg>
@@ -67,32 +57,85 @@
   </header>
 
   <!-- Contact Section -->
-  <main class="pt-32 px-4 max-w-3xl mx-auto text-center">
-    <h2 class="text-4xl font-bold text-blue-800 mb-6">Contact Us</h2>
-    <p class="text-lg mb-6">Feel free to reach out to us via the details below.</p>
-    <div class="text-left space-y-4 text-gray-700">
-      <p><strong>📍 Address:</strong> Arab Jamat Office, Jamnagar, Gujarat</p>
-      <p><strong>📞 Phone:</strong> +91-1234567890</p>
-      <p><strong>📧 Email:</strong> contact@arabjamatjamnagar.org</p>
+  <main class="pt-32 px-4 max-w-4xl mx-auto pb-20">
+    <h1 class="text-4xl font-bold text-primary mb-10 text-center">Contact Us</h1>
+    
+    <div class="grid md:grid-cols-2 gap-8">
+      <div class="bg-white p-6 rounded-xl shadow-md">
+        <h2 class="text-2xl font-semibold text-primary mb-4">Contact Information</h2>
+        <div class="space-y-4">
+          <div>
+            <h3 class="font-medium text-gray-800">📍 Main Office</h3>
+            <p class="text-gray-700">Arab Jamat Office, Jamnagar, Gujarat, India</p>
+          </div>
+          <div>
+            <h3 class="font-medium text-gray-800">📞 Phone</h3>
+            <p class="text-gray-700">+91-1234567890</p>
+          </div>
+          <div>
+            <h3 class="font-medium text-gray-800">📧 Email</h3>
+            <p class="text-gray-700">contact@arabjamatjamnagar.org</p>
+          </div>
+          <div>
+            <h3 class="font-medium text-gray-800">🕒 Office Hours</h3>
+            <p class="text-gray-700">Monday to Friday: 10AM - 5PM</p>
+            <p class="text-gray-700">Saturday: 10AM - 2PM</p>
+          </div>
+        </div>
+      </div>
+      
+      <div class="bg-white p-6 rounded-xl shadow-md">
+        <h2 class="text-2xl font-semibold text-primary mb-4">Send Us a Message</h2>
+        <form id="contact-form" class="space-y-4">
+          <div>
+            <label for="name" class="block text-gray-700 mb-1">Your Name</label>
+            <input type="text" id="name" class="w-full p-2 border rounded focus:ring-2 focus:ring-primary">
+          </div>
+          <div>
+            <label for="email" class="block text-gray-700 mb-1">Email Address</label>
+            <input type="email" id="email" class="w-full p-2 border rounded focus:ring-2 focus:ring-primary">
+          </div>
+          <div>
+            <label for="subject" class="block text-gray-700 mb-1">Subject</label>
+            <input type="text" id="subject" class="w-full p-2 border rounded focus:ring-2 focus:ring-primary">
+          </div>
+          <div>
+            <label for="message" class="block text-gray-700 mb-1">Message</label>
+            <textarea id="message" rows="4" class="w-full p-2 border rounded focus:ring-2 focus:ring-primary"></textarea>
+          </div>
+          <button type="submit" class="bg-primary text-white py-2 px-6 rounded hover:bg-secondary transition">
+            Send Message
+          </button>
+        </form>
+      </div>
+    </div>
+    
+    <div class="mt-12 bg-white p-6 rounded-xl shadow-md">
+      <h2 class="text-2xl font-semibold text-primary mb-4">Committee Members</h2>
+      <div class="grid sm:grid-cols-2 md:grid-cols-3 gap-4">
+        <div class="border p-4 rounded-lg">
+          <h3 class="font-medium text-gray-800">President</h3>
+          <p class="text-gray-700">Mr. Example Name</p>
+          <p class="text-sm text-gray-500">contact@example.com</p>
+        </div>
+        <!-- Add more committee members as needed -->
+      </div>
     </div>
   </main>
 
   <!-- Footer -->
-  <footer class="bg-blue-700 text-white py-8 mt-10 text-center">
-    <p class="text-sm">&copy; અરબ જમાત જામનગર (ર.જી નં - બી/૮૧). All rights reserved.</p>
+  <footer class="bg-primary text-white py-8 text-center">
+    <div class="max-w-6xl mx-auto px-4">
+      <p class="text-sm">&copy; અરબ જમાત જામનગર (ર.જી નં - બી/૮૧). All rights reserved.</p>
+    </div>
   </footer>
 
-  <!-- Mobile Menu JS -->
+  <script src="js/common.js"></script>
   <script>
-    document.addEventListener("DOMContentLoaded", () => {
-      const toggleBtn = document.getElementById("menu-toggle");
-      const mobileMenu = document.getElementById("mobile-menu");
-      toggleBtn.addEventListener("click", () => {
-        mobileMenu.classList.toggle("hidden");
-        setTimeout(() => {
-          mobileMenu.classList.toggle("opacity-0");
-        }, 10);
-      });
+    document.getElementById('contact-form').addEventListener('submit', function(e) {
+      e.preventDefault();
+      alert('Thank you for your message. We will get back to you soon.');
+      this.reset();
     });
   </script>
 </body>
