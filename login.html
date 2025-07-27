@@ -6,12 +6,12 @@
   <title>Login | Arab Jamat Jamnagar</title>
   <script src="https://cdn.tailwindcss.com"></script>
 
-  <!-- Firebase SDK -->
+  <!-- Firebase SDKs -->
   <script src="https://www.gstatic.com/firebasejs/10.5.2/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/10.5.2/firebase-auth-compat.js"></script>
 
   <style>
-    body { display: none; } /* Hide content until Firebase decides */
+    body { display: none; }
   </style>
 
   <script>
@@ -27,35 +27,29 @@
         if (user) {
           window.location.href = "index.html";
         } else {
-          document.body.style.display = "block"; // show login form only if not logged in
+          document.body.style.display = "block";
         }
       });
     });
 
     function loginUser(event) {
       event.preventDefault();
-      const email = document.getElementById("email").value;
+      const email = document.getElementById("email").value.trim();
       const password = document.getElementById("password").value;
+      if (!email || !password) return alert("Please enter both email and password.");
       firebase.auth().signInWithEmailAndPassword(email, password)
-        .then(() => {
-          window.location.href = "index.html";
-        })
-        .catch(error => {
-          alert(error.message);
-        });
+        .then(() => window.location.href = "index.html")
+        .catch(err => alert(err.message));
     }
 
     function signupUser(event) {
       event.preventDefault();
-      const email = document.getElementById("email").value;
+      const email = document.getElementById("email").value.trim();
       const password = document.getElementById("password").value;
+      if (!email || !password) return alert("Please enter both email and password.");
       firebase.auth().createUserWithEmailAndPassword(email, password)
-        .then(() => {
-          window.location.href = "index.html";
-        })
-        .catch(error => {
-          alert(error.message);
-        });
+        .then(() => window.location.href = "index.html")
+        .catch(err => alert(err.message));
     }
   </script>
 </head>
@@ -64,13 +58,12 @@
   <div class="min-h-screen flex items-center justify-center">
     <div class="bg-white p-8 rounded-lg shadow-md w-full max-w-md text-center">
       <h2 class="text-2xl font-bold mb-6 text-blue-700">Login to Arab Jamat Jamnagar</h2>
-      <form id="login-form" onsubmit="loginUser(event)">
+      <form id="auth-form">
         <input type="email" id="email" placeholder="Email" class="w-full mb-4 p-2 border rounded" required />
         <input type="password" id="password" placeholder="Password" class="w-full mb-4 p-2 border rounded" required />
-        <button type="submit" class="bg-blue-700 hover:bg-blue-800 text-white w-full py-2 rounded">Login</button>
+        <button onclick="loginUser(event)" class="bg-blue-700 hover:bg-blue-800 text-white w-full py-2 rounded mb-2">Login</button>
+        <button onclick="signupUser(event)" class="bg-gray-200 hover:bg-gray-300 text-blue-700 w-full py-2 rounded">Create New Account</button>
       </form>
-      <p class="mt-4 text-sm text-gray-600">Don't have an account?</p>
-      <button onclick="signupUser(event)" class="mt-2 text-sm text-blue-600 hover:underline">Create Account</button>
     </div>
   </div>
 
