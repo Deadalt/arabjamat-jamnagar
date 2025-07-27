@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Dashboard - Arab Jamat Jamnagar</title>
+
+  <!-- Tailwind CSS for cleaner design -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['Segoe UI', 'Roboto', 'sans-serif']
+          }
+        }
+      }
+    }
+  </script>
+
+  <!-- Firebase SDKs -->
+  <script src="https://www.gstatic.com/firebasejs/10.5.2/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.5.2/firebase-auth-compat.js"></script>
+
+  <!-- Firebase Config & Auth Check -->
+  <script>
+    const firebaseConfig = {
+      apiKey: "AIzaSyBj912pLGQg06hUXcJi5XSwAWJailUWcZs",
+      authDomain: "arabjamatjamnagar.firebaseapp.com",
+      projectId: "arabjamatjamnagar"
+    };
+
+    firebase.initializeApp(firebaseConfig);
+
+    firebase.auth().onAuthStateChanged((user) => {
+      if (user) {
+        document.getElementById("user-info").innerText = `Logged in as: ${user.email}`;
+      } else {
+        window.location.href = "login.html";
+      }
+    });
+
+    function logout() {
+      firebase.auth().signOut().then(() => {
+        window.location.href = "login.html";
+      });
+    }
+  </script>
+</head>
+<body class="bg-gray-100 font-sans">
+
+  <div class="max-w-xl mx-auto bg-white mt-20 p-6 rounded-xl shadow-lg">
+    <div class="flex justify-between items-center mb-4">
+      <h2 class="text-2xl font-bold text-blue-700">Dashboard</h2>
+      <button onclick="logout()" class="bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600 transition">Logout</button>
+    </div>
+    <p id="user-info" class="text-gray-700">Loading user info...</p>
+  </div>
+
+</body>
+</html>

@@ -4,6 +4,8 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Contact - Arab Jamat Jamnagar</title>
+
+  <!-- Tailwind CSS -->
   <script src="https://cdn.tailwindcss.com"></script>
   <script>
     tailwind.config = {
@@ -15,6 +17,25 @@
         }
       }
     }
+  </script>
+
+  <!-- Firebase SDKs -->
+  <script src="https://www.gstatic.com/firebasejs/10.5.2/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.5.2/firebase-auth-compat.js"></script>
+  <script>
+    const firebaseConfig = {
+      apiKey: "AIzaSyBj912pLGQg06hUXcJi5XSwAWJailUWcZs",
+      authDomain: "arabjamatjamnagar.firebaseapp.com",
+      projectId: "arabjamatjamnagar"
+    };
+
+    firebase.initializeApp(firebaseConfig);
+
+    firebase.auth().onAuthStateChanged((user) => {
+      if (!user) {
+        window.location.href = "login.html";
+      }
+    });
   </script>
 </head>
 <body class="bg-white text-gray-800 font-sans">
@@ -45,7 +66,7 @@
     </div>
   </header>
 
-  <!-- Contact Content -->
+  <!-- Contact Section -->
   <main class="pt-32 px-4 max-w-3xl mx-auto text-center">
     <h2 class="text-4xl font-bold text-blue-800 mb-6">Contact Us</h2>
     <p class="text-lg mb-6">Feel free to reach out to us via the details below.</p>
