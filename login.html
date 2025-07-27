@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Login | Arab Jamat Jamnagar</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+
+  <!-- Firebase SDKs (Compat version) -->
+  <script src="https://www.gstatic.com/firebasejs/10.5.2/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.5.2/firebase-auth-compat.js"></script>
+  <script>
+    const firebaseConfig = {
+      apiKey: "AIzaSyBj912pLGQg06hUXcJi5XSwAWJailUWcZs",
+      authDomain: "arabjamatjamnagar.firebaseapp.com",
+      projectId: "arabjamatjamnagar",
+      storageBucket: "arabjamatjamnagar.firebasestorage.app",
+      messagingSenderId: "257628939713",
+      appId: "1:257628939713:web:8eab9357803ee72c6cbb40",
+      measurementId: "G-4SC1KSRV8H"
+    };
+
+    firebase.initializeApp(firebaseConfig);
+  </script>
+</head>
+
+<body class="bg-blue-50 flex items-center justify-center min-h-screen">
+  <div class="bg-white shadow-md rounded-lg p-8 max-w-sm w-full">
+    <h2 class="text-2xl font-bold mb-6 text-center text-blue-700">Login</h2>
+
+    <div class="mb-4">
+      <label class="block text-gray-700 mb-1" for="email">Email</label>
+      <input id="email" type="email" class="w-full border border-gray-300 rounded px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500" required>
+    </div>
+
+    <div class="mb-6">
+      <label class="block text-gray-700 mb-1" for="password">Password</label>
+      <input id="password" type="password" class="w-full border border-gray-300 rounded px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500" required>
+    </div>
+
+    <button onclick="login()" class="w-full bg-blue-700 hover:bg-blue-800 text-white font-semibold py-2 px-4 rounded">
+      Login
+    </button>
+
+    <p id="error-msg" class="text-red-600 text-sm mt-4 text-center hidden"></p>
+  </div>
+
+  <script>
+    const auth = firebase.auth();
+
+    function login() {
+      const email = document.getElementById("email").value;
+      const password = document.getElementById("password").value;
+      const errorMsg = document.getElementById("error-msg");
+
+      auth.signInWithEmailAndPassword(email, password)
+        .then((userCredential) => {
+          // Redirect to dashboard or homepage
+          window.location.href = "dashboard.html"; // Create this page later
+        })
+        .catch((error) => {
+          errorMsg.textContent = error.message;
+          errorMsg.classList.remove("hidden");
+        });
+    }
+  </script>
+</body>
+</html>
