@@ -1,0 +1,314 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Arab Jamat Jamnagar</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css"/>
+  <style>
+    #auth-modal .rounded-lg {
+      animation: fadeIn 0.5s ease;
+    }
+    .fade-enter { opacity: 0; transform: scale(0.98); }
+    .fade-enter-active { opacity: 1; transform: scale(1); transition: all 0.3s ease-in-out; }
+    .fade-exit { opacity: 1; }
+    .fade-exit-active { opacity: 0; transition: opacity 0.2s ease-out; }
+    .animate-fade-in { animation: fadeIn 0.7s ease-in-out; }
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+  </style>
+</head>
+<body class="bg-white text-gray-800 font-sans">
+
+  <!-- Header -->
+  <header class="bg-blue-700 text-white shadow-lg fixed top-0 w-full z-50">
+    <div class="max-w-7xl mx-auto px-4 py-4 flex justify-between items-center">
+      <h1 class="text-xl font-extrabold tracking-wide">અરબ જમાત જામનગર</h1>
+      <nav class="hidden md:flex gap-8 text-sm md:text-base">
+        <button onclick="showView('home')" class="hover:underline">Home</button>
+        <button onclick="showView('about')" class="hover:underline">About</button>
+        <button onclick="showView('gallery')" class="hover:underline">Gallery</button>
+        <button onclick="showView('contact')" class="hover:underline">Contact</button>
+        <button onclick="showView('dashboard')" class="hover:underline">Dashboard</button>
+        <button onclick="logout()" class="hover:underline text-red-300">Logout</button>
+      </nav>
+      <button id="hamburger" class="md:hidden focus:outline-none">
+        <svg class="w-7 h-7" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M4 6h16M4 12h16M4 18h16"/>
+        </svg>
+      </button>
+    </div>
+    <div id="mobile-menu" class="hidden md:hidden bg-blue-600 text-white px-4 py-4 space-y-3">
+      <button onclick="showView('home'); toggleMenu()" class="block w-full text-left hover:underline">Home</button>
+      <button onclick="showView('about'); toggleMenu()" class="block w-full text-left hover:underline">About</button>
+      <button onclick="showView('gallery'); toggleMenu()" class="block w-full text-left hover:underline">Gallery</button>
+      <button onclick="showView('contact'); toggleMenu()" class="block w-full text-left hover:underline">Contact</button>
+      <button onclick="showView('dashboard'); toggleMenu()" class="block w-full text-left hover:underline">Dashboard</button>
+      <button onclick="logout(); toggleMenu()" class="block w-full text-left hover:underline text-red-300">Logout</button>
+    </div>
+  </header>
+
+  <!-- Views -->
+  <main id="app" class="pt-32 px-4 transition-all">
+    <section id="home-view" class="view">
+      <div class="max-w-3xl mx-auto text-center">
+        <h2 class="text-4xl md:text-5xl font-bold mb-6 text-blue-800">Welcome to Arab Jamat Jamnagar</h2>
+        <p class="text-lg text-gray-700 mb-6">સાથ-સહકાર-એકતા ✍️🤝 સમાજ ને સંગઠીત, શિક્ષિત, સમૃદ્ધ અને દરેક ક્ષેત્રમાં ખુબ જ શક્તિશાળી બનાવવાનો અમારો ઉદ્દેશ છે.</p>
+        <div class="swiper mySwiper rounded-2xl overflow-hidden shadow-xl">
+          <div class="swiper-wrapper">
+            <div class="swiper-slide"><img src="assets/images/Slide1.jpeg" class="w-full object-cover max-h-[400px]" alt="Slide 1"></div>
+            <div class="swiper-slide"><img src="assets/images/Slide2.jpeg" class="w-full object-cover max-h-[400px]" alt="Slide 2"></div>
+            <div class="swiper-slide"><img src="assets/images/Slide3.jpeg" class="w-full object-cover max-h-[400px]" alt="Slide 3"></div>
+          </div>
+          <div class="swiper-button-prev text-blue-800"></div>
+          <div class="swiper-button-next text-blue-800"></div>
+          <div class="swiper-pagination"></div>
+        </div>
+      </div>
+    </section>
+
+    <section id="about-view" class="view hidden">
+      <div class="max-w-5xl mx-auto px-4 text-center animate-fade-in">
+        <h2 class="text-4xl md:text-5xl font-bold text-blue-800 mb-6">About Arab Jamat Jamnagar</h2>
+        <p class="text-lg md:text-xl text-gray-700 leading-relaxed mb-6">
+          અરબ જમાત જામનગર એ એક નોન-પ્રોફિટબલ, સામાજિક સંસ્થા છે જે સમાજના સમૂહવિકાસ અને ભવિષ્ય ઘડતરમાં અગ્રેસર છે.<br/>
+          અમારા મુખ્ય ઉદ્દેશો છે: શિક્ષણ, આરોગ્ય, રોજગાર, સામાજિક એકતા અને સહયોગ દ્વારા સમાજના દરેક સભ્યનું સર્વાંગી વિકાસ કરવો.
+        </p>
+        <div class="w-full flex justify-center">
+          <div class="w-full md:w-2/3 lg:w-1/2 rounded-xl overflow-hidden shadow-md">
+            <img src="assets/images/about-placeholder.jpg" alt="About Us" class="w-full h-auto object-cover" />
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="gallery-view" class="view hidden">
+      <div class="max-w-6xl mx-auto px-4 text-center animate-fade-in">
+        <h2 class="text-4xl md:text-5xl font-bold text-blue-800 mb-6">Gallery</h2>
+        <p class="text-lg text-gray-600 mb-10">A glimpse of our community events, unity, and progress.</p>
+
+        <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
+          <!-- Image Card -->
+          <div class="overflow-hidden rounded-lg shadow-lg transform transition hover:scale-105 duration-300">
+            <img src="assets/images/gallery1.jpg" alt="Gallery Image 1" class="w-full h-60 object-cover">
+          </div>
+          <div class="overflow-hidden rounded-lg shadow-lg transform transition hover:scale-105 duration-300">
+            <img src="assets/images/gallery2.jpg" alt="Gallery Image 2" class="w-full h-60 object-cover">
+          </div>
+          <div class="overflow-hidden rounded-lg shadow-lg transform transition hover:scale-105 duration-300">
+            <img src="assets/images/gallery3.jpg" alt="Gallery Image 3" class="w-full h-60 object-cover">
+          </div>
+
+          <!-- Placeholder Images -->
+          <div class="overflow-hidden rounded-lg shadow-lg transform transition hover:scale-105 duration-300">
+            <img src="https://via.placeholder.com/600x400?text=Coming+Soon" alt="Coming Soon" class="w-full h-60 object-cover">
+          </div>
+          <div class="overflow-hidden rounded-lg shadow-lg transform transition hover:scale-105 duration-300">
+            <img src="https://via.placeholder.com/600x400?text=Event+Image" alt="Event Placeholder" class="w-full h-60 object-cover">
+          </div>
+          <div class="overflow-hidden rounded-lg shadow-lg transform transition hover:scale-105 duration-300">
+            <img src="https://via.placeholder.com/600x400?text=More+Updates" alt="More Updates" class="w-full h-60 object-cover">
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="contact-view" class="view hidden">
+      <div class="max-w-7xl mx-auto px-4 py-10 text-center animate-fade-in">
+        <h2 class="text-4xl md:text-5xl font-bold text-blue-800 mb-10">Contact Us</h2>
+        <div class="grid gap-6 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3">
+          <!-- Contact Card 1 -->
+          <div class="bg-white rounded-xl shadow-lg p-6 transform transition duration-300 hover:scale-105 hover:shadow-2xl">
+            <img src="assets/images/person1.jpg" alt="Person 1" class="w-32 h-32 mx-auto rounded-full object-cover mb-4">
+            <h3 class="text-xl font-semibold text-gray-800">Javedbhai Shaikh</h3>
+            <p class="text-sm text-gray-600 mb-2">President</p>
+            <p class="text-gray-700">📞 +91 98765 43210</p>
+            <p class="text-gray-700">✉️ javed@example.com</p>
+          </div>
+
+          <!-- Contact Card 2 -->
+          <div class="bg-white rounded-xl shadow-lg p-6 transform transition duration-300 hover:scale-105 hover:shadow-2xl">
+            <img src="assets/images/person2.jpg" alt="Person 2" class="w-32 h-32 mx-auto rounded-full object-cover mb-4">
+            <h3 class="text-xl font-semibold text-gray-800">Salimbhai Bukhari</h3>
+            <p class="text-sm text-gray-600 mb-2">Secretary</p>
+            <p class="text-gray-700">📞 +91 99887 66554</p>
+            <p class="text-gray-700">✉️ salim@example.com</p>
+          </div>
+
+          <!-- Contact Card 3 -->
+          <div class="bg-white rounded-xl shadow-lg p-6 transform transition duration-300 hover:scale-105 hover:shadow-2xl">
+            <img src="assets/images/person3.jpg" alt="Person 3" class="w-32 h-32 mx-auto rounded-full object-cover mb-4">
+            <h3 class="text-xl font-semibold text-gray-800">Rahimbhai Vohra</h3>
+            <p class="text-sm text-gray-600 mb-2">Treasurer</p>
+            <p class="text-gray-700">📞 +91 91234 56789</p>
+            <p class="text-gray-700">✉️ rahim@example.com</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="dashboard-view" class="view hidden">
+      <div class="max-w-6xl mx-auto px-4 py-8 animate-fade-in">
+        <h2 class="text-4xl font-bold text-blue-800 text-center mb-8">My Family Dashboard</h2>
+
+        <div id="family-form" class="space-y-6">
+          <!-- Family Member Form Template -->
+          <div class="family-member-card bg-white rounded-xl shadow-md p-6 relative border border-blue-100">
+            <h3 class="text-lg font-semibold text-blue-700 mb-4">Family Member</h3>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <input type="text" placeholder="Full Name" class="w-full px-4 py-2 border rounded" />
+              <input type="text" placeholder="Relation (e.g., Father, Sister)" class="w-full px-4 py-2 border rounded" />
+              <input type="text" placeholder="Contact Number" class="w-full px-4 py-2 border rounded" />
+              <input type="text" placeholder="Address" class="w-full px-4 py-2 border rounded" />
+              
+              <div class="md:col-span-2">
+                <label class="block text-sm text-gray-600 mb-1">Upload Photo</label>
+                <input type="file" accept="image/*" onchange="previewImage(this)" class="block w-full px-2 py-1 border rounded" />
+                <img src="" alt="Preview" class="mt-3 w-32 h-32 object-cover rounded hidden">
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="flex justify-between items-center mt-6">
+          <button onclick="addFamilyCard()" class="bg-green-600 text-white px-6 py-2 rounded hover:bg-green-700 transition">
+            + Add Another Member
+          </button>
+          <button onclick="submitFamilyData()" class="bg-blue-700 text-white px-6 py-2 rounded hover:bg-blue-800 transition">
+            Submit All
+          </button>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- Footer -->
+  <footer class="bg-blue-700 text-white py-6 mt-10 text-center">
+    <p class="text-sm">&copy; અરબ જમાત જામનગર (ર.જી નં - બી/૮૧). All rights reserved.</p>
+  </footer>
+
+  <!-- Firebase + Swiper Scripts -->
+  <script src="https://www.gstatic.com/firebasejs/10.5.2/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.5.2/firebase-auth-compat.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
+
+  <!-- Auth Modal -->
+  <div id="auth-modal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 hidden">
+    <div class="bg-white rounded-lg w-full max-w-sm p-6 relative">
+      <h2 id="auth-title" class="text-xl font-bold text-center mb-4">Login</h2>
+      <input id="auth-email" type="email" placeholder="Email" class="w-full px-4 py-2 mb-3 border rounded">
+      <input id="auth-password" type="password" placeholder="Password" class="w-full px-4 py-2 mb-3 border rounded">
+      <p id="auth-error" class="text-red-500 text-sm mb-3"></p>
+      <button onclick="handleAuth()" class="w-full bg-blue-700 text-white py-2 rounded hover:bg-blue-800 transition">Continue</button>
+      <p class="text-sm text-center mt-4">
+        <span id="toggle-auth-text">Don't have an account?</span>
+        <button onclick="toggleAuth()" class="text-blue-700 underline ml-1">Sign Up</button>
+      </p>
+    </div>
+  </div>
+
+  <!-- App Logic -->
+  <script>
+    const firebaseConfig = {
+      apiKey: "AIzaSyBj912pLGQg06hUXcJi5XSwAWJailUWcZs",
+      authDomain: "arabjamatjamnagar.firebaseapp.com",
+      projectId: "arabjamatjamnagar"
+    };
+    firebase.initializeApp(firebaseConfig);
+
+    let isLogin = true;
+
+    function showAuthModal() {
+      document.getElementById("auth-modal").classList.remove("hidden");
+    }
+
+    function toggleAuth() {
+      isLogin = !isLogin;
+      document.getElementById("auth-title").textContent = isLogin ? "Login" : "Sign Up";
+      document.getElementById("toggle-auth-text").textContent = isLogin ? "Don't have an account?" : "Already have an account?";
+      document.querySelector("#toggle-auth-text + button").textContent = isLogin ? "Sign Up" : "Login";
+      document.getElementById("auth-error").textContent = "";
+    }
+
+    function handleAuth() {
+      const email = document.getElementById("auth-email").value;
+      const password = document.getElementById("auth-password").value;
+      const errorBox = document.getElementById("auth-error");
+
+      if (!email || !password) {
+        errorBox.textContent = "Email and password are required.";
+        return;
+      }
+
+      const auth = firebase.auth();
+      const promise = isLogin
+        ? auth.signInWithEmailAndPassword(email, password)
+        : auth.createUserWithEmailAndPassword(email, password);
+
+      promise.then(() => {
+        document.getElementById("auth-modal").classList.add("hidden");
+      }).catch(err => {
+        errorBox.textContent = err.message;
+      });
+    }
+
+    document.addEventListener("DOMContentLoaded", () => {
+      const views = ['home', 'about', 'gallery', 'contact', 'dashboard'];
+
+      function showView(id) {
+        views.forEach(v => {
+          const el = document.getElementById(`${v}-view`);
+          if (el) el.classList.add('hidden');
+        });
+        const active = document.getElementById(`${id}-view`);
+        if (active) {
+          active.classList.remove('hidden');
+          active.classList.add('fade-enter');
+          setTimeout(() => active.classList.remove('fade-enter'), 10);
+          window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+      }
+
+      function toggleMenu() {
+        const menu = document.getElementById("mobile-menu");
+        if (menu) menu.classList.toggle("hidden");
+      }
+
+      document.getElementById("hamburger").addEventListener("click", toggleMenu);
+      document.querySelectorAll("#mobile-menu button, header nav button").forEach(btn => {
+        btn.addEventListener("click", () => {
+          const viewId = btn.getAttribute("onclick")?.match(/showView\('(.+?)'\)/)?.[1];
+          if (viewId) showView(viewId);
+          if (btn.closest("#mobile-menu")) toggleMenu();
+        });
+      });
+
+      new Swiper(".mySwiper", {
+        loop: true,
+        autoplay: { delay: 4000, disableOnInteraction: false },
+        navigation: { nextEl: ".swiper-button-next", prevEl: ".swiper-button-prev" },
+        pagination: { el: ".swiper-pagination", clickable: true },
+      });
+
+      window.logout = function () {
+        firebase.auth().signOut().then(() => showAuthModal());
+      };
+
+      firebase.auth().onAuthStateChanged((user) => {
+        if (!user) {
+          showAuthModal();
+        } else {
+          document.getElementById("auth-modal").classList.add("hidden");
+          showView("home");
+        }
+      });
+    });
+  </script>
+
+</body>
+</html>
