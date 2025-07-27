@@ -1,4 +1,22 @@
 <!DOCTYPE html>
+<!-- Firebase SDKs (already in your page) -->
+<script src="https://www.gstatic.com/firebasejs/10.5.2/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.5.2/firebase-auth-compat.js"></script>
+<script>
+  const firebaseConfig = {
+    apiKey: "AIzaSyBj912pLGQg06hUXcJi5XSwAWJailUWcZs",
+    authDomain: "arabjamatjamnagar.firebaseapp.com",
+    projectId: "arabjamatjamnagar"
+  };
+  firebase.initializeApp(firebaseConfig);
+
+  firebase.auth().onAuthStateChanged((user) => {
+    if (!user) {
+      // Not logged in, redirect to login
+      window.location.href = "login.html";
+    }
+  });
+</script>
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
