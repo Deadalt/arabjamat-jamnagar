@@ -7,20 +7,38 @@
   <script src="https://cdn.tailwindcss.com"></script>
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css"/>
   <style>
+    button {
+      transition: all 0.3s ease-in-out;
+    }
+    button:hover {
+      transform: scale(1.05) translateY(-2px);
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+    }
+    .fade-swap {
+      opacity: 0;
+      transform: scale(0.95);
+      transition: all 0.9s ease;
+        }
+    .fade-swap-active {
+      opacity: 1;
+      transform: scale(1);
+    }
+
     #auth-modal .rounded-lg {
-      animation: fadeIn 0.5s ease;
+      animation: fadeIn 0.9s ease;
     }
     .fade-enter { opacity: 0; transform: scale(0.98); }
-    .fade-enter-active { opacity: 1; transform: scale(1); transition: all 0.3s ease-in-out; }
+    .fade-enter-active { opacity: 1; transform: scale(1); transition: all 0.9s ease-in-out; }
     .fade-exit { opacity: 1; }
-    .fade-exit-active { opacity: 0; transition: opacity 0.2s ease-out; }
-    .animate-fade-in { animation: fadeIn 0.7s ease-in-out; }
+    .fade-exit-active { opacity: 0; transition: opacity 0.9s ease-out; }
+    .animate-fade-in { animation: fadeIn 0.9s ease-in-out; }
     @keyframes fadeIn {
       from { opacity: 0; transform: translateY(20px); }
       to { opacity: 1; transform: translateY(0); }
     }
   </style>
 </head>
+<div id="toast-container" class="fixed top-6 right-6 space-y-3 z-50"></div>
 <body class="bg-white text-gray-800 font-sans">
 
   <!-- Header -->
@@ -28,12 +46,14 @@
     <div class="max-w-7xl mx-auto px-4 py-4 flex justify-between items-center">
       <h1 class="text-xl font-extrabold tracking-wide">અરબ જમાત જામનગર</h1>
       <nav class="hidden md:flex gap-8 text-sm md:text-base">
-        <button onclick="showView('home')" class="hover:underline">Home</button>
-        <button onclick="showView('about')" class="hover:underline">About</button>
-        <button onclick="showView('gallery')" class="hover:underline">Gallery</button>
-        <button onclick="showView('contact')" class="hover:underline">Contact</button>
-        <button onclick="showView('dashboard')" class="hover:underline">Dashboard</button>
-        <button onclick="logout()" class="hover:underline text-red-300">Logout</button>
+        <button onclick="showView('admin-panel')" id="admin-nav" class="hover:underline transform transition duration-300 hover:-translate-y-1 hover:scale-105">Admin Panel</button>
+        <button onclick="showView('profile')" class="hover:underline transform transition duration-300 hover:-translate-y-1 hover:scale-105">Profile</button>
+        <button onclick="showView('home')" class="hover:underline transform transition duration-300 hover:-translate-y-1 hover:scale-105">Home</button>
+        <button onclick="showView('about')" class="hover:underline transform transition duration-300 hover:-translate-y-1 hover:scale-105">About</button>
+        <button onclick="showView('gallery')" class="hover:underline transform transition duration-300 hover:-translate-y-1 hover:scale-105">Gallery</button>
+        <button onclick="showView('contact')" class="hover:underline transform transition duration-300 hover:-translate-y-1 hover:scale-105">Contact</button>
+        <button onclick="showView('dashboard')" class="hover:underline transform transition duration-300 hover:-translate-y-1 hover:scale-105">Dashboard</button>
+        <button onclick="logout()" class="hover:underline transform transition duration-300 hover:-translate-y-1 hover:scale-105">Logout</button>
       </nav>
       <button id="hamburger" class="md:hidden focus:outline-none">
         <svg class="w-7 h-7" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
@@ -42,12 +62,14 @@
       </button>
     </div>
     <div id="mobile-menu" class="hidden md:hidden bg-blue-600 text-white px-4 py-4 space-y-3">
-      <button onclick="showView('home'); toggleMenu()" class="block w-full text-left hover:underline">Home</button>
-      <button onclick="showView('about'); toggleMenu()" class="block w-full text-left hover:underline">About</button>
-      <button onclick="showView('gallery'); toggleMenu()" class="block w-full text-left hover:underline">Gallery</button>
-      <button onclick="showView('contact'); toggleMenu()" class="block w-full text-left hover:underline">Contact</button>
-      <button onclick="showView('dashboard'); toggleMenu()" class="block w-full text-left hover:underline">Dashboard</button>
-      <button onclick="logout(); toggleMenu()" class="block w-full text-left hover:underline text-red-300">Logout</button>
+      <button onclick="showView('admin-panel'); toggleMenu()" id="admin-nav" class="hover:underline transform transition duration-300 hover:-translate-y-1 hover:scale-105">Admin Panel</button>
+      <button onclick="showView('profile'); toggleMenu()" class="hover:underline transform transition duration-300 hover:-translate-y-1 hover:scale-105">Profile</button>
+      <button onclick="showView('home'); toggleMenu()" class="hover:underline transform transition duration-300 hover:-translate-y-1 hover:scale-105">Home</button>
+      <button onclick="showView('about'); toggleMenu()" class="hover:underline transform transition duration-300 hover:-translate-y-1 hover:scale-105">About</button>
+      <button onclick="showView('gallery'); toggleMenu()" class="hover:underline transform transition duration-300 hover:-translate-y-1 hover:scale-105">Gallery</button>
+      <button onclick="showView('contact'); toggleMenu()" class="hover:underline transform transition duration-300 hover:-translate-y-1 hover:scale-105">Contact</button>
+      <button onclick="showView('dashboard'); toggleMenu()" class="hover:underline transform transition duration-300 hover:-translate-y-1 hover:scale-105">Dashboard</button>
+      <button onclick="logout(); toggleMenu()" class="hover:underline transform transition duration-300 hover:-translate-y-1 hover:scale-105">Logout</button>
     </div>
   </header>
 
@@ -157,14 +179,26 @@
         <div id="family-form" class="space-y-6">
           <!-- Family Member Form Template -->
           <div class="family-member-card bg-white rounded-xl shadow-md p-6 relative border border-blue-100">
+            <div class="absolute top-2 right-2 flex space-x-2">
+              <button onclick="editMember(this)" class="text-blue-600 hover:underline text-sm">Edit</button>
+              <button onclick="deleteMember(this)" class="text-red-600 hover:underline text-sm">Delete</button>
+            </div>
             <h3 class="text-lg font-semibold text-blue-700 mb-4">Family Member</h3>
 
             <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <label class="block text-sm text-gray-700">Full Name</label>
               <input type="text" placeholder="Full Name" class="w-full px-4 py-2 border rounded" />
-              <input type="text" placeholder="Relation (e.g., Father, Sister)" class="w-full px-4 py-2 border rounded" />
-              <input type="text" placeholder="Contact Number" class="w-full px-4 py-2 border rounded" />
+              <label class="block text-sm text-gray-700">Address</label>
               <input type="text" placeholder="Address" class="w-full px-4 py-2 border rounded" />
-              
+              <label class="block text-sm text-gray-700">Relation</label>
+              <input type="text" placeholder="Relation (e.g., Father, Sister)" class="w-full px-4 py-2 border rounded" />
+              <label class="block text-sm text-gray-700">Contact Number</label>
+              <input type="text" placeholder="Contact Number" class="w-full px-4 py-2 border rounded" />
+              <label class="block text-sm text-gray-700">Family ID <span class="text-red-600">*</span></label>
+              <input type="text" placeholder="Family ID" class="w-full px-4 py-2 border rounded" required />
+          
+
+            
               <div class="md:col-span-2">
                 <label class="block text-sm text-gray-600 mb-1">Upload Photo</label>
                 <input type="file" accept="image/*" onchange="previewImage(this)" class="block w-full px-2 py-1 border rounded" />
@@ -173,7 +207,6 @@
             </div>
           </div>
         </div>
-
         <div class="flex justify-between items-center mt-6">
           <button onclick="addFamilyCard()" class="bg-green-600 text-white px-6 py-2 rounded hover:bg-green-700 transition">
             + Add Another Member
@@ -184,6 +217,79 @@
         </div>
       </div>
     </section>
+
+    <section id="admin-panel-view" class="view hidden">
+      <div class="max-w-7xl mx-auto px-4 py-8 animate-fade-in">
+        <h2 class="text-4xl font-bold text-blue-800 text-center mb-8">Admin Panel</h2>
+        <div id="admin-families-list" class="space-y-8">
+          <p class="text-center text-gray-600">Loading families...</p>
+        </div>
+      </div>
+    </section>
+
+    <section id="profile-view" class="view hidden">
+      <div class="max-w-xl mx-auto px-4 py-8 text-center animate-fade-in">
+        <h2 class="text-3xl font-bold text-blue-800 mb-4">My Profile</h2>
+        <p><strong>Email:</strong> <span id="profile-email"></span></p>
+        <p><strong>Family ID:</strong> <span id="profile-family-id"></span></p>
+      </div>
+    </section>
+  <script>
+  // Existing script code...
+    function editMember(btn) {
+      const card = btn.closest(".family-member-card");
+      const inputs = card.querySelectorAll("input");
+      inputs.forEach(input => input.removeAttribute("readonly"));
+      showToast("Edit mode enabled", "success");
+    }
+
+    function deleteMember(btn) {
+      if (!confirm("Are you sure you want to delete this member?")) return;
+
+      const card = btn.closest(".family-member-card");
+      card.remove();
+      showToast("Member removed", "success");
+    }
+    function showToast(message, type = "success") {
+      const toast = document.createElement("div");
+      toast.className = `px-4 py-3 rounded shadow text-white font-medium transition transform duration-300 ${
+        type === "success" ? "bg-green-600" : "bg-red-600"
+      }`;
+      toast.textContent = message;
+
+      document.getElementById("toast-container").appendChild(toast);
+
+      setTimeout(() => {
+        toast.classList.add("opacity-0", "-translate-y-3");
+        setTimeout(() => toast.remove(), 500);
+      }, 3000);
+    }
+
+    function submitFamilyData() {
+      const cards = document.querySelectorAll('.family-member-card');
+      let valid = true;
+
+      cards.forEach(card => {
+        const familyId = card.querySelector('input[placeholder*="Family ID"]');
+        if (!familyId || !familyId.value.trim()) {
+          familyId.classList.add("border-red-500");
+          valid = false;
+        } else {
+          familyId.classList.remove("border-red-500");
+        }
+      });
+
+      if (!valid) {
+        showToast("Some error message", "error");
+        return;
+      }
+
+      // ✅ Proceed with saving data or Firebase logic
+      showToast("Family members saved successfully!", "success");
+    }
+
+    // Rest of your app logic...
+  </script>
 
   </main>
 
@@ -203,6 +309,7 @@
       <h2 id="auth-title" class="text-xl font-bold text-center mb-4">Login</h2>
       <input id="auth-email" type="email" placeholder="Email" class="w-full px-4 py-2 mb-3 border rounded">
       <input id="auth-password" type="password" placeholder="Password" class="w-full px-4 py-2 mb-3 border rounded">
+      <input id="auth-family-id" type="text" placeholder="Family ID" class="w-full px-4 py-2 mb-3 border rounded hidden">
       <p id="auth-error" class="text-red-500 text-sm mb-3"></p>
       <button onclick="handleAuth()" class="w-full bg-blue-700 text-white py-2 rounded hover:bg-blue-800 transition">Continue</button>
       <p class="text-sm text-center mt-4">
@@ -228,35 +335,180 @@
     }
 
     function toggleAuth() {
-      isLogin = !isLogin;
-      document.getElementById("auth-title").textContent = isLogin ? "Login" : "Sign Up";
-      document.getElementById("toggle-auth-text").textContent = isLogin ? "Don't have an account?" : "Already have an account?";
-      document.querySelector("#toggle-auth-text + button").textContent = isLogin ? "Sign Up" : "Login";
-      document.getElementById("auth-error").textContent = "";
+      const modalBox = document.querySelector("#auth-modal .rounded-lg");
+      modalBox.classList.add("fade-swap");
+
+      setTimeout(() => {
+        isLogin = !isLogin;
+        document.getElementById("auth-title").textContent = isLogin ? "Login" : "Sign Up";
+        document.getElementById("toggle-auth-text").textContent = isLogin ? "Don't have an account?" : "Already have an account?";
+        document.querySelector("#toggle-auth-text + button").textContent = isLogin ? "Sign Up" : "Login";
+        document.getElementById("auth-error").textContent = "";
+        
+        const familyIdInput = document.getElementById("auth-family-id");
+        if (!isLogin) {
+          familyIdInput.classList.remove("hidden");
+        } else {
+          familyIdInput.classList.add("hidden");
+        }
+        modalBox.classList.remove("fade-swap");
+        modalBox.classList.add("fade-swap-active");
+
+        setTimeout(() => {
+          modalBox.classList.remove("fade-swap-active");
+        }, 300);
+      }, 200);
     }
 
-    function handleAuth() {
+    async function handleAuth() {
       const email = document.getElementById("auth-email").value;
       const password = document.getElementById("auth-password").value;
+      const familyId = document.getElementById("auth-family-id").value?.trim();
       const errorBox = document.getElementById("auth-error");
-
-      if (!email || !password) {
-        errorBox.textContent = "Email and password are required.";
+      
+      
+      if (!email || !password || (!isLogin && !familyId)) {
+        errorBox.textContent = "All fields are required.";
         return;
       }
 
       const auth = firebase.auth();
-      const promise = isLogin
-        ? auth.signInWithEmailAndPassword(email, password)
-        : auth.createUserWithEmailAndPassword(email, password);
+      const db = firebase.firestore();
 
-      promise.then(() => {
+      showLoading();
+      try {
+        if (isLogin) {
+          await auth.signInWithEmailAndPassword(email, password);
+        } else {
+          // Check if Family ID already exists
+          const existing = await db.collection("families").doc(familyId).get();
+          if (existing.exists) {
+            errorBox.textContent = "This Family ID is already registered.";
+            return;
+          }
+
+          const userCredential = await auth.createUserWithEmailAndPassword(email, password);
+          const userId = userCredential.user.uid;
+
+          // Store user data in Firestore
+          await db.collection("families").doc(familyId).set({
+            userId,
+            email,
+            createdAt: firebase.firestore.FieldValue.serverTimestamp()
+          });
+
+          await db.collection("users").doc(userId).set({
+            email,
+            familyId,
+            role: "user"
+          });
+        }
+
         document.getElementById("auth-modal").classList.add("hidden");
-      }).catch(err => {
+        errorBox.textContent = "";
+      } catch (err) {
         errorBox.textContent = err.message;
-      });
+      } finally {
+        hideLoading();
+      }
+        
     }
+    async function submitFamilyData() {
+      const user = firebase.auth().currentUser;
+      if (!user) {
+        alert("You're not logged in.");
+        return;
+      }
 
+      const userDoc = await firebase.firestore().collection("users").doc(user.uid).get();
+      const familyId = userDoc.data()?.familyId;
+
+      if (!familyId) {
+        alert("Family ID not found. Please login again.");
+        return;
+      }
+
+      const cards = document.querySelectorAll('.family-member-card');
+      const db = firebase.firestore();
+      const batch = db.batch();
+      showLoading(); // 👈 Start loading
+      try {
+      for (let card of cards) {
+        const inputs = card.querySelectorAll("input[type=text]");
+        const [fullName, relation, contact, address] = Array.from(inputs).map(i => i.value.trim());
+
+        const photoInput = card.querySelector('input[type="file"]');
+        const photoFile = photoInput?.files?.[0];
+
+        if (!fullName || !relation || !contact || !address) {
+          alert("Please fill in all fields for each member.");
+          return;
+        }
+
+        let photoURL = "";
+        if (photoFile) {
+          const storageRef = firebase.storage().ref(`families/${familyId}/${Date.now()}_${photoFile.name}`);
+          await storageRef.put(photoFile);
+          photoURL = await storageRef.getDownloadURL();
+        }
+
+        const newMemberRef = db.collection("families").doc(familyId).collection("members").doc();
+        batch.set(newMemberRef, {
+          fullName,
+          relation,
+          contact,
+          address,
+          photoURL,
+          createdAt: firebase.firestore.FieldValue.serverTimestamp()
+        });
+      }
+          // existing code...
+      await batch.commit();
+      showToast("Family members saved successfully!", "success");
+    } catch (err) {
+        // handle error
+      } finally {
+        hideLoading();
+      }
+    }
+    async function loadAdminPanel() {
+      const container = document.getElementById("admin-families-list");
+      container.innerHTML = "<p class='text-center text-gray-600'>Loading...</p>";
+
+      const familiesSnap = await firebase.firestore().collection("families").get();
+      container.innerHTML = "";
+
+      for (const familyDoc of familiesSnap.docs) {
+        const familyId = familyDoc.id;
+        const membersSnap = await firebase.firestore()
+          .collection("families")
+          .doc(familyId)
+          .collection("members")
+          .get();
+
+        const memberCards = membersSnap.docs.map(doc => {
+          const m = doc.data();
+          return `
+            <div class="bg-white p-4 rounded shadow border">
+              <p><strong>Name:</strong> ${m.fullName}</p>
+              <p><strong>Relation:</strong> ${m.relation}</p>
+              <p><strong>Contact:</strong> ${m.contact}</p>
+              <p><strong>Address:</strong> ${m.address}</p>
+              ${m.photoURL ? `<img src="${m.photoURL}" class="w-24 h-24 mt-2 object-cover rounded">` : ""}
+            </div>
+          `;
+        }).join("");
+
+        container.innerHTML += `
+          <div class="bg-blue-50 p-6 rounded-lg shadow-md">
+            <h3 class="text-xl font-bold mb-4 text-blue-700">Family ID: ${familyId}</h3>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+              ${memberCards || "<p class='text-gray-500'>No members found.</p>"}
+            </div>
+          </div>
+        `;
+      }
+    }
     document.addEventListener("DOMContentLoaded", () => {
       const views = ['home', 'about', 'gallery', 'contact', 'dashboard'];
 
@@ -299,16 +551,43 @@
         firebase.auth().signOut().then(() => showAuthModal());
       };
 
-      firebase.auth().onAuthStateChanged((user) => {
+      firebase.auth().onAuthStateChanged(async (user) => {
+        document.getElementById("profile-email").textContent = user.email;
+        document.getElementById("profile-family-id").textContent = data?.familyId || "N/A";
+
         if (!user) {
           showAuthModal();
         } else {
           document.getElementById("auth-modal").classList.add("hidden");
           showView("home");
+
+          // 🔐 Check user role for admin access
+          try {
+            const userDoc = await firebase.firestore().collection("users").doc(user.uid).get();
+            const data = userDoc.data();
+
+            if (data?.role === "admin") {
+              document.getElementById("admin-nav").classList.remove("hidden");
+              loadAdminPanel(); // 🔁 Load admin dashboard data
+            } else {
+              document.getElementById("admin-nav").classList.add("hidden");
+            }
+          } catch (err) {
+            console.error("Error checking admin role:", err.message);
+          }
         }
       });
+      function showLoading() {
+        document.getElementById("loading-spinner").classList.remove("hidden");
+      }
+
+      function hideLoading() {
+        document.getElementById("loading-spinner").classList.add("hidden");
+      }
     });
   </script>
-
+  <div id="loading-spinner" class="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50 hidden">
+    <div class="w-12 h-12 border-4 border-white border-t-transparent rounded-full animate-spin"></div>
+  </div>
 </body>
 </html>
