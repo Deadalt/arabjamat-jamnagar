@@ -7,6 +7,10 @@
   <script src="https://cdn.tailwindcss.com"></script>
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css"/>
   <style>
+    #mobile-menu button {
+      width: 100%;
+      text-align: left;
+    }
     button {
       transition: all 0.3s ease-in-out;
     }
@@ -36,6 +40,20 @@
       from { opacity: 0; transform: translateY(20px); }
       to { opacity: 1; transform: translateY(0); }
     }
+    @keyframes zoomIn {
+      from {
+        opacity: 0;
+        transform: scale(0.6);
+      }
+      to {
+        opacity: 1;
+        transform: scale(1);
+      }
+    }
+
+    .zoom-in {
+      animation: zoomIn 0.6s ease-out forwards;
+    }
   </style>
 </head>
 <div id="toast-container" class="fixed top-6 right-6 space-y-3 z-50"></div>
@@ -61,7 +79,7 @@
         </svg>
       </button>
     </div>
-    <div id="mobile-menu" class="hidden md:hidden bg-blue-600 text-white px-4 py-4 space-y-3">
+    <div id="mobile-menu" class="hidden md:hidden bg-blue-600 text-white px-4 py-4 space-y-3 flex flex-col items-start">
       <button onclick="showView('admin-panel'); toggleMenu()" id="admin-nav" class="hover:underline transform transition duration-300 hover:-translate-y-1 hover:scale-105">Admin Panel</button>
       <button onclick="showView('profile'); toggleMenu()" class="hover:underline transform transition duration-300 hover:-translate-y-1 hover:scale-105">Profile</button>
       <button onclick="showView('home'); toggleMenu()" class="hover:underline transform transition duration-300 hover:-translate-y-1 hover:scale-105">Home</button>
@@ -95,18 +113,32 @@
     <section id="about-view" class="view hidden">
       <div class="max-w-5xl mx-auto px-4 text-center animate-fade-in">
         <h2 class="text-4xl md:text-5xl font-bold text-blue-800 mb-6">About Arab Jamat Jamnagar</h2>
-        <p class="text-lg md:text-xl text-gray-700 leading-relaxed mb-6">
-          અરબ જમાત જામનગર એ એક નોન-પ્રોફિટબલ, સામાજિક સંસ્થા છે જે સમાજના સમૂહવિકાસ અને ભવિષ્ય ઘડતરમાં અગ્રેસર છે.<br/>
-          અમારા મુખ્ય ઉદ્દેશો છે: શિક્ષણ, આરોગ્ય, રોજગાર, સામાજિક એકતા અને સહયોગ દ્વારા સમાજના દરેક સભ્યનું સર્વાંગી વિકાસ કરવો.
-        </p>
-        <div class="w-full flex justify-center">
-          <div class="w-full md:w-2/3 lg:w-1/2 rounded-xl overflow-hidden shadow-md">
-            <img src="assets/images/about-placeholder.jpg" alt="About Us" class="w-full h-auto object-cover" />
+        <p class="text-lg md:text-xl text-gray-700 mb-6">અરબ જમાત જામનગર એ એક નોન-પ્રોફિટબલ સામાજિક સંસ્થા છે...</p>
+        
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mt-10 text-left">
+          <div class="bg-white p-6 rounded-xl shadow-md hover:shadow-xl transition duration-300">
+            <h3 class="text-xl font-bold text-blue-700 mb-2">📅 Established</h3>
+            <p>Founded in 1985 with the vision to uplift the Arab community through unity and development.</p>
           </div>
+          <div class="bg-white p-6 rounded-xl shadow-md hover:shadow-xl transition duration-300">
+            <h3 class="text-xl font-bold text-blue-700 mb-2">🎯 Mission</h3>
+            <p>To promote education, health, employment and preserve cultural heritage for future generations.</p>
+          </div>
+          <div class="bg-white p-6 rounded-xl shadow-md hover:shadow-xl transition duration-300">
+            <h3 class="text-xl font-bold text-blue-700 mb-2">👥 Community</h3>
+            <p>We proudly serve 400+ families across Jamnagar and abroad, staying connected through events.</p>
+          </div>
+          <div class="bg-white p-6 rounded-xl shadow-md hover:shadow-xl transition duration-300">
+            <h3 class="text-xl font-bold text-blue-700 mb-2">📸 Gallery</h3>
+            <p>Explore past events, award ceremonies, and festive celebrations in our community gallery.</p>
+          </div>
+        </div>
+        
+        <div class="w-full mt-10 flex justify-center">
+          <img src="assets/images/about-placeholder.jpg" alt="About Us" class="w-full max-w-xl rounded-lg shadow-lg"/>
         </div>
       </div>
     </section>
-
     <section id="gallery-view" class="view hidden">
       <div class="max-w-6xl mx-auto px-4 text-center animate-fade-in">
         <h2 class="text-4xl md:text-5xl font-bold text-blue-800 mb-6">Gallery</h2>
@@ -513,18 +545,27 @@
       const views = ['home', 'about', 'gallery', 'contact', 'dashboard'];
 
       function showView(id) {
-        views.forEach(v => {
-          const el = document.getElementById(`${v}-view`);
-          if (el) el.classList.add('hidden');
-        });
-        const active = document.getElementById(`${id}-view`);
-        if (active) {
-          active.classList.remove('hidden');
-          active.classList.add('fade-enter');
-          setTimeout(() => active.classList.remove('fade-enter'), 10);
+        const loading = document.getElementById("loading-spinner");
+        loading.classList.remove("hidden");
+
+        setTimeout(() => {
+          views.forEach(v => {
+            const el = document.getElementById(`${v}-view`);
+            if (el) el.classList.add('hidden');
+          });
+
+          const active = document.getElementById(`${id}-view`);
+          if (active) {
+            active.classList.remove('hidden');
+            active.classList.add('fade-enter');
+            setTimeout(() => active.classList.remove('fade-enter'), 10);
+          }
+
           window.scrollTo({ top: 0, behavior: 'smooth' });
-        }
+          loading.classList.add("hidden"); // Hide loading after view is shown
+        }, 500); // small delay for effect
       }
+
 
       function toggleMenu() {
         const menu = document.getElementById("mobile-menu");
@@ -567,7 +608,7 @@
             const data = userDoc.data();
 
             if (data?.role === "admin") {
-              document.getElementById("admin-nav").classList.remove("hidden");
+              document.querySelectorAll("#admin-nav").forEach(btn => btn.classList.remove("hidden"));
               loadAdminPanel(); // 🔁 Load admin dashboard data
             } else {
               document.getElementById("admin-nav").classList.add("hidden");
@@ -578,7 +619,15 @@
         }
       });
       function showLoading() {
-        document.getElementById("loading-spinner").classList.remove("hidden");
+        const spinner = document.getElementById("loading-spinner");
+        const logo = spinner.querySelector("img");
+
+        // Remove and re-add the zoom-in class to restart the animation
+        logo.classList.remove("zoom-in");
+        void logo.offsetWidth; // Force reflow
+        logo.classList.add("zoom-in");
+
+        spinner.classList.remove("hidden");
       }
 
       function hideLoading() {
@@ -586,8 +635,10 @@
       }
     });
   </script>
-  <div id="loading-spinner" class="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50 hidden">
+  <div id="loading-spinner" class="fixed inset-0 flex flex-col gap-4 items-center justify-center bg-black bg-opacity-50 z-50 hidden">
+    <img src="assets/images/logo.png" class="w-24 h-24 zoom-in animate-pulse" alt="Logo" />
     <div class="w-12 h-12 border-4 border-white border-t-transparent rounded-full animate-spin"></div>
   </div>
+
 </body>
 </html>
